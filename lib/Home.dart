@@ -30,14 +30,9 @@ class _HomeState extends State<Home> {
 
   _post() async {
 
-    var corpo = json.encode(
-      {
-        "userId": 120,
-        "id": null,
-        "title": "Título",
-        "body": "Corpo da postagem"
-      }
-    );
+    Post post = new Post(120, null, "Título", "Corpo da postagem");
+
+    var corpo = json.encode(post.toJson());
 
     http.Response response = await http.post(
       _urlBase + "/posts",
@@ -51,16 +46,49 @@ class _HomeState extends State<Home> {
     print("resposta: ${response.body}");
   }
 
-  _put() {
+  _put() async {
 
+    Post post = new Post(120, null, "Título", "Corpo da postagem");
+
+    var corpo = json.encode(post.toJson());
+
+    http.Response response = await http.put(
+        _urlBase + "/posts/2",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        },
+        body: corpo
+    );
+
+    print("resposta: ${response.statusCode}");
+    print("resposta: ${response.body}");
   }
 
-  _patch() {
+  _patch() async {
+    
+    Post post = new Post(120, null, "Título", "Corpo da postagem");
 
+    var corpo = json.encode(post.toJson());
+
+    http.Response response = await http.patch(
+        _urlBase + "/posts/2",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        },
+        body: corpo
+    );
+
+    print("resposta: ${response.statusCode}");
+    print("resposta: ${response.body}");
   }
 
-  _delete() {
+  _delete() async {
+    http.Response response = await http.delete(
+      _urlBase + "/posts/2"
+    );
 
+    print("resposta: ${response.statusCode}");
+    print("resposta: ${response.body}");
   }
 
   @override
@@ -81,11 +109,11 @@ class _HomeState extends State<Home> {
                 ),
                 RaisedButton(
                   child: Text("Atualizar"),
-                  onPressed: _post,
+                  onPressed: _patch,
                 ),
                 RaisedButton(
                   child: Text("Deletar"),
-                  onPressed: _post,
+                  onPressed: _delete,
                 )
               ],
             ),
